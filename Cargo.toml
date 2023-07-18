@@ -1,0 +1,21 @@
+[package]
+name = "project_name"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = ""
+keywords = []
+documentation = "https://docs.rs/project_name"
+repository = "https://github.com/qdwang/project_name"
+
+[dev-dependencies]
+
+[dependencies]
+
+[profile.release]
+codegen-units = 1
+lto="fat"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
