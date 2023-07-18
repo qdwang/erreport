@@ -1,9 +1,9 @@
 [package]
 name = "erreport"
+description = "A Result helper for Rust"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
-description = ""
 keywords = []
 documentation = "https://docs.rs/erreport"
 repository = "https://github.com/qdwang/erreport"
