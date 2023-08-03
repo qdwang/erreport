@@ -11,6 +11,11 @@ So we can get this report in `release` mode with `debug=0`:
   -> {package2@version2} src/lib.rs:251 -> InvalidXXX
 ```
 
+#### Pros over `Backtrace`
+* No `RUST_BACKTRACE=1` needed.
+* No `debug=1` needed.
+* Packages and their versions are recorded.
+
 ### How to use 
 ```rust
 // This will generate a trait called `pub(crate) trait ToReport<T>` to help to convert any `Result<T, E: std::error::Error>` to `Report`.
