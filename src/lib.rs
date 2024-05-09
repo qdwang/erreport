@@ -21,11 +21,11 @@
 //! ```rust
 //! // This will generate a trait called `pub(crate) trait ToReport<T>` to help to convert any `Result<T, E: std::error::Error>` to `Report`.
 //! // You just need to call once for each crate.
-//! erreport::gen_trait_to_report!(); 
+//! erreport::prepare!(); 
 //! 
-//! fn test() -> Result<(), erreport::Report> {
-//!     any_result_impl_std_error_Error.to_report()?;
-//!     any_result_impl_std_error_Error.to_report()?;
+//! fn test() -> Report<()> {
+//!     any_result_impl_std_error_Error.report()?;
+//!     any_result_impl_std_error_Error.report()?;
 //!     Ok(())
 //! }
 //! ```
@@ -104,17 +104,21 @@ impl Report {
     }
 }
 
-/// This will generate a trait called `pub(crate) trait ToReport<T>` to help to convert any `Result<T, E: std::error::Error>` to `Report`.
+/// This will generate:
+/// 1. A type `pub(crate) type Report<T> = Result<T, erreport::Report>`
+/// 2. A trait called `pub(crate) trait ToReport<T>` to help to convert any `Result<T, E: std::error::Error>` to `Report`.
 #[macro_export]
-macro_rules! gen_trait_to_report {
+macro_rules! prepare {
     () => {
+        pub(crate) type Report<T> = Result<T, erreport::Report>;
+
         pub(crate) trait ToReport<T> {
-            fn to_report(self) -> Result<T, erreport::Report>;
+            fn report(self) -> Result<T, erreport::Report>;
         }
 
         impl<T, E: std::error::Error + 'static> ToReport<T> for Result<T, E> {
             #[track_caller]
-            fn to_report(self) -> Result<T, erreport::Report> {
+            fn report(self) -> Result<T, erreport::Report> {
                 match self {
                     Ok(t) => Ok(t),
                     Err(err) => {
